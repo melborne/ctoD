@@ -56,13 +56,20 @@ module CtoD
     end
 
     def column_types
+      is_date = /^\s*\d{1,4}(\-|\/)?\d{1,2}(\-|\/)?\d{1,2}\s*$/
       @csv.first.to_hash.inject([]) do |mem, (k, v)|
         mem << begin
           case v
+          when 'true', 'false'
+            :boolean
+          when is_date
+            :date
           when String, Symbol
-            @csv[k].max_by(&:size).size > string_size ? :text : :string
+            @csv[k].compact.max_by(&:size).size > string_size ? :text : :string
           when Fixnum, Float
             @csv[k].any? { |e| e.is_a? Float } ? :float : :integer
+          when NilClass
+            :string
           else
             v.class.name.downcase.intern
           end
