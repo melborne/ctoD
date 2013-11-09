@@ -33,11 +33,11 @@ module CtoD
       end
     end
 
-    def import
+    def export
       self.class.const_set(@class_name, Class.new(AR))
       self.class.const_get(@class_name).create! @csv.map(&:to_hash)
     rescue => e
-      puts "Something go wrong at import: #{e}"
+      puts "Something go wrong at export: #{e}"
     end
 
     private
