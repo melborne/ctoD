@@ -5,6 +5,10 @@ require 'mysql2'
 
 module CtoD
   class DB
+    def self.connect(db)
+      new('dummy.csv', db).connect
+    end
+
     AR = ActiveRecord::Base
     attr_accessor :string_size
     attr_reader :table_name, :class_name, :uri
