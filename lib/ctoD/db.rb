@@ -5,20 +5,15 @@ require 'mysql2'
 
 module CtoD
   class DB
-    def self.connect(db)
-      new('dummy.csv', db).connect
-    end
-
     AR = ActiveRecord::Base
     attr_accessor :string_size
     attr_reader :table_name, :class_name, :uri
     def initialize(csv, uri, string_size:100)
-      @uri = URI.parse(uri)
       @table_name = File.basename(csv, '.csv').intern
       @class_name = @table_name[0..-2].capitalize
       @csv = CSV.table(csv)
       @string_size = string_size
-      connect
+      @uri = DB.connect(uri)
     end
 
     def table_exists?
@@ -44,21 +39,23 @@ module CtoD
       puts "Something go wrong at export: #{e}"
     end
 
-    private
-    def connect
+    def self.connect(uri)
+      uri = URI.parse(uri)
       settings = {
-        adapter: @uri.scheme,
-        host: @uri.host,
-        username: @uri.user,
-        password: @uri.password,
-        database: @uri.path[1..-1],
+        adapter: uri.scheme,
+        host: uri.host,
+        username: uri.user,
+        password: uri.password,
+        database: uri.path[1..-1],
         encoding: 'utf8'
       }
       AR.establish_connection(settings)
+      uri
     rescue => e
       puts "Something go wrong at connect: #{e}"
     end
 
+    private
     def column_types
       is_date = /^\s*\d{1,4}(\-|\/)?\d{1,2}(\-|\/)?\d{1,2}\s*$/
       @csv.first.to_hash.inject([]) do |mem, (k, v)|
