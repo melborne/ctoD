@@ -8,9 +8,9 @@ Gem::Specification.new do |spec|
   spec.version       = CtoD::VERSION
   spec.authors       = ["kyoendo"]
   spec.email         = ["postagie@gmail.com"]
-  spec.description   = %q{Export CSV data to a database table}
-  spec.summary       = %q{Export CSV data to a database table}
-  spec.homepage      = ""
+  spec.description   = %q{Export CSV data to database}
+  spec.summary       = %q{Export CSV data to database}
+  spec.homepage      = "https://github.com/melborne/ctoD"
   spec.license       = "MIT"
 
   spec.files         = `git ls-files`.split($/)

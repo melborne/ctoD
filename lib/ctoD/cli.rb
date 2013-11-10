@@ -2,7 +2,7 @@ require 'thor'
 
 module CtoD
   class CLI < Thor
-    desc "export CSV DATABASE", "Export CSV data to a DATABASE"
+    desc "export CSV DATABASE", "Export CSV data to DATABASE"
     option :string_size, aliases:"-s", default:100
     def export(from, to)
       db = create_table(from, to)

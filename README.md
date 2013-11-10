@@ -1,6 +1,6 @@
 # CtoD
 
-TODO: Write a gem description
+CtoD is a tool for exporting a CSV data to database.
 
 ## Installation
 
@@ -18,7 +18,20 @@ Or install it yourself as:
 
 ## Usage
 
-TODO: Write usage instructions here
+It comes with `ctoD` command.
+
+    # Display help.
+    % ctoD
+    Commands:
+      ctoD create_table CSV DATABASE  # Create a database table for CSV
+      ctoD export CSV DATABASE        # Export CSV data to a DATABASE
+      ctoD help [COMMAND]             # Describe available commands or one specific command
+
+    # Export movies.csv data to a table named 'movies' at postgres movies database.
+    % ctoD export movies.csv postgres://localhost/movies
+
+    # Export movies.csv data to movies.sqlite3 database file.
+    % ctoD export movies.csv sqlite3://localhost/${HOME}/.db/movies.sqlite3
 
 ## Contributing
 
