@@ -1,7 +1,6 @@
 require 'csv'
 require 'uri'
 require 'active_record'
-require 'mysql2'
 
 module CtoD
   class DB
