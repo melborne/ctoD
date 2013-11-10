@@ -40,6 +40,7 @@ module CtoD
 
     def self.connect(uri)
       uri = URI.parse(uri)
+      uri.scheme = 'postgresql' if uri.scheme=='postgres'
       settings = {
         adapter: uri.scheme,
         host: uri.host,
