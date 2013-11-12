@@ -4,12 +4,13 @@ require 'active_record'
 
 module CtoD
   class DB
+    include ActiveSupport::Inflector
     AR = ActiveRecord::Base
     attr_accessor :string_size
     attr_reader :table_name, :class_name, :uri
     def initialize(csv, uri, string_size:100)
       @table_name = File.basename(csv, '.csv').intern
-      @class_name = @table_name[0..-2].capitalize
+      @class_name = singularize(@table_name).capitalize
       @csv = CSV.table(csv)
       @string_size = string_size
       @uri = DB.connect(uri)
