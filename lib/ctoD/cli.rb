@@ -22,5 +22,11 @@ module CtoD
       end
       db
     end
+
+    desc "version", "Show CtoD version"
+    def version
+      puts "CtoD #{CtoD::VERSION} (c) 2013 kyoendo"
+    end
+    map "-v" => :version
   end
 end
