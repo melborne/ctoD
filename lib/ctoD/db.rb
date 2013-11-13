@@ -11,7 +11,7 @@ module CtoD
     def initialize(csv, uri, string_size:100)
       @table_name = File.basename(csv, '.csv').intern
       @class_name = singularize(@table_name).capitalize
-      @csv = CSV.table(csv)
+      @csv = CSV.table(csv, header_converters:->h{h.strip})
       @string_size = string_size
       @uri = DB.connect(uri)
     end
@@ -58,7 +58,7 @@ module CtoD
 
     private
     def column_types
-      is_date = /^\s*\d{1,4}(\-|\/)?\d{1,2}(\-|\/)?\d{1,2}\s*$/
+      is_date = /^\s*\d{1,4}(\-|\/)\d{1,2}(\-|\/)\d{1,2}\s*$/
       @csv.first.to_hash.inject([]) do |mem, (k, v)|
         mem << begin
           case v
