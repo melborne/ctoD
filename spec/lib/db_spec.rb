@@ -5,7 +5,7 @@ require File.dirname(__FILE__) + '/../spec_helper'
 describe CtoD::DB do
 
   def delete_db_if_exist
-    db_dir = '.'
+    db_dir = '/tmp'
     db = File.join(db_dir, 'test.db')
     File.delete(db) if File.exist?(db)
   end
@@ -26,7 +26,7 @@ describe CtoD::DB do
   context 'create_table and table_exists? method' do
     describe 'with database filename' do
       it "should be success" do
-        conn = CtoD::DB.new(csv = csvfile, uri = 'sqlite3://localhost/tmp/test.db')
+        conn = CtoD::DB.new(csv = csvfile, uri = 'sqlite3://localhost//tmp/test.db')
         conn.table_exists?.should be_false
         conn.create_table
         conn.table_exists?.should be_true
@@ -37,7 +37,7 @@ describe CtoD::DB do
   context 'connect method' do
     describe 'with database uri' do
       it "should be success" do
-        conn = CtoD::DB.connect('sqlite3://localhost/tmp/test.db')
+        conn = CtoD::DB.connect('sqlite3://localhost//tmp/test.db')
         conn.class.should eql URI::Generic
       end
     end
