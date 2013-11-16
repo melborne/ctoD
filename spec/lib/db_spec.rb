@@ -26,7 +26,7 @@ describe CtoD::DB do
     delete_db_if_exist
   end
 
-  describe 'create_table and table_exists? methods' do
+  describe '#create_table and #table_exists?' do
     context 'with csv filename and database uri' do
       it "should be success and db is empty" do
         conn = CtoD::DB.new(csv = csvfile, uri = 'sqlite3://localhost//tmp/test.db')
@@ -39,7 +39,7 @@ describe CtoD::DB do
     end
   end
 
-  describe 'connect method' do
+  describe '.connect' do
     context 'with database uri' do
       it "should get URI::Generic class" do
         conn = CtoD::DB.connect('sqlite3://localhost//tmp/test.db')
@@ -48,7 +48,7 @@ describe CtoD::DB do
     end
   end
 
-  describe 'export method' do
+  describe '#export' do
     context 'with csv filename and database uri' do
       it "should be export csv file to database" do
         conn = CtoD::DB.new(csv = csvfile, uri = 'sqlite3://localhost//tmp/test.db')
