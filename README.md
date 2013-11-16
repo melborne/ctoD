@@ -24,14 +24,19 @@ It comes with `ctoD` command.
     % ctoD
     Commands:
       ctoD create_table CSV DATABASE  # Create a database table for CSV
-      ctoD export CSV DATABASE        # Export CSV data to a DATABASE
+      ctoD export CSV DATABASE        # Export CSV data to DATABASE
       ctoD help [COMMAND]             # Describe available commands or one specific command
+      ctoD table_columns CSV          # Show column name and type pairs for a table based on given CSV
+      ctoD version                    # Show CtoD version
 
     # Export movies.csv data to a table named 'movies' at postgres movies database.
     % ctoD export movies.csv postgres://localhost/movies
 
     # Export movies.csv data to movies.sqlite3 database file.
     % ctoD export movies.csv sqlite3://localhost/${HOME}/.db/movies.sqlite3
+
+    # Check table column schema to be created based on given CSV.
+    % ctoD table_columns movies.csv
 
 ## Contributing
 
