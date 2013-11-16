@@ -13,6 +13,7 @@ module CtoD
       @class_name = singularize(@table_name).capitalize
       @csv = CSV.table(csv, header_converters:->h{h.strip})
       @string_size = string_size
+      @table_columns = nil
       @uri = DB.connect(uri)
     end
 
@@ -25,11 +26,15 @@ module CtoD
     def create_table
       conn = AR.connection
       conn.create_table(@table_name) do |t|
-        @csv.headers.zip(column_types).each do |name, type|
+        table_columns.each do |name, type|
           t.column name, type
         end
         t.timestamps
       end
+    end
+
+    def table_columns
+      @table_columns ||= build_columns
     end
 
     def export
@@ -57,10 +62,10 @@ module CtoD
     end
 
     private
-    def column_types
+    def build_columns
       is_date = /^\s*\d{1,4}(\-|\/)\d{1,2}(\-|\/)\d{1,2}\s*$/
-      @csv.first.to_hash.inject([]) do |mem, (k, v)|
-        mem << begin
+      @csv.first.to_hash.inject({}) do |mem, (k, v)|
+        mem[k.intern] = begin
           case v
           when 'true', 'false'
             :boolean
@@ -76,6 +81,7 @@ module CtoD
             v.class.name.downcase.intern
           end
         end
+        mem
       end
     end
   end

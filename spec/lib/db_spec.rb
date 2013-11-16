@@ -73,4 +73,17 @@ describe CtoD::DB do
       end
     end
   end
+
+  describe 'table_columns method' do
+    it 'returns column name and type pairs in hash' do
+      conn = CtoD::DB.new(csv = csvfile, uri = 'sqlite3://localhost//tmp/test.db')
+      columns = conn.table_columns
+      columns[:year].should eql :integer
+      columns[:name].should eql :string
+      columns[:designer].should eql :string
+      columns[:predecessor].should eql :string
+      columns[:date].should eql :date
+      columns[:version].should eql :float
+    end
+  end
 end

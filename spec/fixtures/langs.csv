@@ -1,9 +1,9 @@
-year,name,designer,predecessor
-1995,Ruby,Yukihiro Matsumoto,Smalltalk / Perl
-1959,LISP,John McCarthy,IPL
-1972,Smalltalk,Daniel Henry Holmes Ingalls Jr. / Xerox PARC,Simula 67
-1990,Haskell,Simon Peyton Jones,Miranda
-1995,JavaScript,Brendan Eich,LiveScript
-1995,Java,James Gosling,C / Simula 67 / C++ / Smalltalk
-1993,Lua,Roberto Ierusalimschy,Scheme / SNOBOL / Modula / CLU
-1987,Erlang,Joe Armstrong,Prolog
+year,name,designer,predecessor,date,version
+1995,Ruby,Yukihiro Matsumoto,Smalltalk / Perl,1995-1-1,2.1
+1959,LISP,John McCarthy,IPL,1959-02-01,3
+1972,Smalltalk,Daniel Henry Holmes Ingalls Jr. / Xerox PARC,Simula 67,1959/12/10,5.0
+1990,Haskell,Simon Peyton Jones,Miranda,1990-4-8,2
+1995,JavaScript,Brendan Eich,LiveScript,1995-11-11,
+1995,Java,James Gosling,C / Simula 67 / C++ / Smalltalk,,
+1993,Lua,Roberto Ierusalimschy,Scheme / SNOBOL / Modula / CLU,1993-1-1,5
+1987,Erlang,Joe Armstrong,Prolog,,
