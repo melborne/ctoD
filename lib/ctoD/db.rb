@@ -34,7 +34,7 @@ module CtoD
     end
 
     def table_columns
-      @table_columns ||= build_columns
+      @table_columns ||= self.class.build_columns(@csv, string_size:@string_size)
     end
 
     def export
@@ -61,10 +61,9 @@ module CtoD
       puts "Something go wrong at connect: #{e}"
     end
 
-    private
-    def build_columns
+    def self.build_columns(csv, string_size:100)
       is_date = /^\s*\d{1,4}(\-|\/)\d{1,2}(\-|\/)\d{1,2}\s*$/
-      @csv.first.to_hash.inject({}) do |mem, (k, v)|
+      csv.first.to_hash.inject({}) do |mem, (k, v)|
         mem[k.intern] = begin
           case v
           when 'true', 'false'
@@ -72,9 +71,9 @@ module CtoD
           when is_date
             :date
           when String, Symbol
-            @csv[k].compact.max_by(&:size).size > string_size ? :text : :string
+            csv[k].compact.max_by(&:size).size > string_size ? :text : :string
           when Fixnum, Float
-            @csv[k].any? { |e| e.is_a? Float } ? :float : :integer
+            csv[k].any? { |e| e.is_a? Float } ? :float : :integer
           when NilClass
             :string
           else
