@@ -4,34 +4,27 @@ require File.dirname(__FILE__) + '/../spec_helper'
 
 describe CtoD::DB do
 
-  class Lang < ActiveRecord::Base
-  end
+  class Lang < ActiveRecord::Base; end
 
   def delete_db_if_exist
-    db_dir = '/tmp'
-    db = File.join(db_dir, 'test.db')
+    db = File.join('/tmp', 'test.db')
     File.delete(db) if File.exist?(db)
-  end
-
-  def csvfile
-    csv_dir = File.join(File.dirname(__FILE__), '..', 'fixtures')
-    csv = File.join(csv_dir, 'langs.csv')
   end
 
   before do
     delete_db_if_exist
   end
 
-  after do
-    delete_db_if_exist
-  end
-
   describe '#create_table and #table_exists?' do
     context 'with csv filename and database uri' do
-      it "should be success and db is empty" do
-        conn = CtoD::DB.new(csv = csvfile, uri = 'sqlite3://localhost//tmp/test.db')
-        conn.table_exists?.should be_false
-        conn.create_table
+      subject { conn.create_table }
+
+      let(:csvfile) { File.join(File.join(File.dirname(__FILE__), '..', 'fixtures'), 'langs.csv') }
+      let(:db) { 'sqlite3://localhost//tmp/test.db' }
+      let(:conn) { CtoD::DB.new( csv = csvfile, uri = db ) }
+
+      it 'should be success and db is empty' do
+        subject
         langs = Lang.all
         langs.length.should be 0
         conn.table_exists?.should be_true
@@ -41,21 +34,31 @@ describe CtoD::DB do
 
   describe '.connect' do
     context 'with database uri' do
-      it "should get URI::Generic class" do
-        conn = CtoD::DB.connect('sqlite3://localhost//tmp/test.db')
-        conn.class.should eql URI::Generic
-      end
+      subject {
+        conn = CtoD::DB.connect( uri = db )
+        conn.class
+      }
+
+      let(:db) { 'sqlite3://localhost//tmp/test.db' }
+
+      it { expect(subject).to eql URI::Generic }
     end
   end
 
   describe '#export' do
     context 'with csv filename and database uri' do
-      it "should be export csv file to database" do
-        conn = CtoD::DB.new(csv = csvfile, uri = 'sqlite3://localhost//tmp/test.db')
-        conn.table_exists?.should be_false
+
+      subject {
         conn.create_table
         conn.export
+      }
 
+      let(:csvfile) { File.join(File.join(File.dirname(__FILE__), '..', 'fixtures'), 'langs.csv') }
+      let(:db) { 'sqlite3://localhost//tmp/test.db' }
+      let(:conn) { CtoD::DB.new( csv = csvfile, uri = db ) }
+
+      it "should be export csv file to database" do
+        subject
         langs = Lang.all
         langs.length.should be 8
 
@@ -75,28 +78,39 @@ describe CtoD::DB do
   end
 
   describe '#table_columns' do
+    subject { conn.table_columns }
+
+    let(:csvfile) { File.join(File.join(File.dirname(__FILE__), '..', 'fixtures'), 'langs.csv') }
+    let(:db) { 'sqlite3://localhost//tmp/test.db' }
+    let(:conn) { CtoD::DB.new( csv = csvfile, uri = db ) }
+
     it 'returns column name and type pairs in hash' do
-      conn = CtoD::DB.new(csv = csvfile, uri = 'sqlite3://localhost//tmp/test.db')
-      columns = conn.table_columns
-      columns[:year].should eql :integer
-      columns[:name].should eql :string
-      columns[:designer].should eql :string
-      columns[:predecessor].should eql :string
-      columns[:date].should eql :date
-      columns[:version].should eql :float
+      subject[:year].should eql :integer
+      subject[:name].should eql :string
+      subject[:designer].should eql :string
+      subject[:predecessor].should eql :string
+      subject[:date].should eql :date
+      subject[:version].should eql :float
     end
   end
 
   describe '.build_columns' do
+    subject { CtoD::DB.build_columns(csv) }
+
+    let(:csvfile) { File.join(File.join(File.dirname(__FILE__), '..', 'fixtures'), 'langs.csv') }
+    let(:csv) { CSV.table(csvfile) }
+
     it 'returns column name and type pairs in hash' do
-      csv = CSV.table(csvfile)
-      columns = CtoD::DB.build_columns(csv)
-      columns[:year].should eql :integer
-      columns[:name].should eql :string
-      columns[:designer].should eql :string
-      columns[:predecessor].should eql :string
-      columns[:date].should eql :date
-      columns[:version].should eql :float
+      subject[:year].should eql :integer
+      subject[:name].should eql :string
+      subject[:designer].should eql :string
+      subject[:predecessor].should eql :string
+      subject[:date].should eql :date
+      subject[:version].should eql :float
     end
+  end
+
+  after do
+    delete_db_if_exist
   end
 end
