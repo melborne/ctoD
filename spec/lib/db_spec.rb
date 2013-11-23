@@ -26,8 +26,8 @@ describe CtoD::DB do
       it 'should be success and db is empty' do
         subject
         langs = Lang.all
-        langs.length.should be 0
-        conn.table_exists?.should be_true
+        expect(langs.length).to eq 0
+        expect(conn.table_exists?).to be_true
       end
     end
   end
@@ -60,19 +60,19 @@ describe CtoD::DB do
       it "should be export csv file to database" do
         subject
         langs = Lang.all
-        langs.length.should be 8
+        expect(langs.length).to eq 8
 
         lang = Lang.find(1)
-        lang.year.should eql 1995
-        lang.name.should eql "Ruby"
-        lang.designer.should eql "Yukihiro Matsumoto"
-        lang.predecessor.should eql "Smalltalk / Perl"
+        expect(lang.year).to eq 1995
+        expect(lang.name).to eq "Ruby"
+        expect(lang.designer).to eq "Yukihiro Matsumoto"
+        expect(lang.predecessor).to eq "Smalltalk / Perl"
 
         lang = Lang.find(8)
-        lang.year.should eql 1987
-        lang.name.should eql "Erlang"
-        lang.designer.should eql "Joe Armstrong"
-        lang.predecessor.should eql "Prolog"
+        expect(lang.year).to eq 1987
+        expect(lang.name).to eq "Erlang"
+        expect(lang.designer).to eq "Joe Armstrong"
+        expect(lang.predecessor).to eq "Prolog"
       end
     end
   end
@@ -85,12 +85,12 @@ describe CtoD::DB do
     let(:conn) { CtoD::DB.new( csv = csvfile, uri = db ) }
 
     it 'returns column name and type pairs in hash' do
-      subject[:year].should eql :integer
-      subject[:name].should eql :string
-      subject[:designer].should eql :string
-      subject[:predecessor].should eql :string
-      subject[:date].should eql :date
-      subject[:version].should eql :float
+      expect(subject[:year]).to be :integer
+      expect(subject[:name]).to be :string
+      expect(subject[:designer]).to be  :string
+      expect(subject[:predecessor]).to be :string
+      expect(subject[:date]).to be :date
+      expect(subject[:version]).to be :float
     end
   end
 
@@ -101,12 +101,12 @@ describe CtoD::DB do
     let(:csv) { CSV.table(csvfile) }
 
     it 'returns column name and type pairs in hash' do
-      subject[:year].should eql :integer
-      subject[:name].should eql :string
-      subject[:designer].should eql :string
-      subject[:predecessor].should eql :string
-      subject[:date].should eql :date
-      subject[:version].should eql :float
+      expect(subject[:year]).to be :integer
+      expect(subject[:name]).to be :string
+      expect(subject[:designer]).to be :string
+      expect(subject[:predecessor]).to be :string
+      expect(subject[:date]).to be :date
+      expect(subject[:version]).to be :float
     end
   end
 
